@@ -1,0 +1,41 @@
+Treinando Sub Consultas  oracle
+
+
+
+
+
+
+-- Consulta tras o Nome do aluno as  materias que ele tem nota,
+-- a nota nas materias que cursou da turma A
+SELECT
+a.nome as nome_aluno,
+n.nota as nota_aluno, 
+p.disciplina as materia, 
+t.nome as turma
+FROM alunos a 
+LEFT JOIN notas n 
+on a.id = n.aluno_id 
+INNER JOIN professores p
+on p.id = n.professor_id 
+INNER JOIN turmas t 
+on t.id = a.turma_id
+where t.nome = 'Turma1'
+
+
+
+
+
+
+-- calcular a media de notas de todos os alunos em 
+-- todas as materias
+SELECT
+upper(a.nome) as nome_aluno,
+round(AVG(n.nota),2) as Media_de_notas
+FROM alunos a 
+LEFT JOIN notas n 
+on a.id = n.aluno_id 
+where 
+ (SELECT AVG(nota) from notas n1 where n1.aluno_id = a.id) < 78
+GROUP by nome_aluno
+ORDER BY Media_de_notas DESC
+-- HAVING AVG(n.nota) < 78 
